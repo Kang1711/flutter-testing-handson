@@ -24,11 +24,11 @@ class PostFailure extends PostState {
   const PostFailure(this.message);
 }
 
-class PostCubit extends Cubit<PostState> {
+class PostCubit extends Cubit<PostState> { //nhận lệnh từ UI, gọi dữ liệu từ Repository, và báo cáo lại kết quả cho UI.
   final IPostRepository repo;
   PostCubit(this.repo) : super(const PostInitial());
   Future<void> fetch() async {
-    emit(const PostLoading());
+    emit(const PostLoading()); //Cubit không dùng return, nó dùng emit
     try {
       final data = await repo.getPosts();
       emit(PostSuccess(data));

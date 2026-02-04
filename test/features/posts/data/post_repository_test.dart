@@ -17,6 +17,7 @@ void main() {
 
     test('getPosts returns list of posts', () async {
       adapter.onGet('/posts', (server) {
+        //Trả về data giả nếu gọi get tới /posts
         server.reply(200, [
           {'id': 1, 'title': 'T1', 'body': 'B1'},
           {'id': 2, 'title': 'T2', 'body': 'B2'},
@@ -29,8 +30,21 @@ void main() {
     });
 
     test('getPosts throws on non-200', () async {
-      adapter.onGet('/posts', (server) => server.reply(500, {}));
+      adapter.onGet(
+        '/posts',
+        (server) => server.reply(500, {}),
+      ); //ép Server lỗi 500 (Server sập) ngay lập tức
       expect(repo.getPosts(), throwsA(isA<DioException>()));
+      // expect(
+      //   repo.getPosts(),
+      //   throwsA( //Xác nhận hành động văng lỗi. (only test)
+      //     isA<DioException>().having( //Đầu tiên phải là loại lỗi DioEx
+      //       (e) => e.response?.statusCode, // Truy cập vào statusCode
+      //       'statusCode', // Tên mô tả
+      //       500, // Giá trị mong đợi
+      //     ),
+      //   ),
+      // );
     });
   });
 }

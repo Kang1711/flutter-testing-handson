@@ -22,8 +22,8 @@ class PostPage extends StatelessWidget {
               );
             case PostLoading():
               return const Center(child: CircularProgressIndicator());
-            case PostSuccess(:final posts):
-              return RefreshIndicator(
+            case PostSuccess(:final posts): //:final posts là lấy thuộc tính posts từ object ra để dùng
+              return RefreshIndicator( //Làm mới UI khi cuộn lên
                 onRefresh: () => context.read<PostCubit>().fetch(),
                 child: PostList(posts: posts),
               );

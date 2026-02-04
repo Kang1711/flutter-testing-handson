@@ -23,10 +23,12 @@ void main() {
         adapter.onGet('/posts', (server) => server.reply(200, [
           {'id': 1, 'title': 'A', 'body': 'a'},
         ]));
-        return PostCubit(repo);
+        return PostCubit(repo); //Tạo ra 1 instance và đưa vào test
       },
       act: (cubit) => cubit.fetch(),
       expect: () => [isA<PostLoading>(), isA<PostSuccess>()],
+      //isA<PostSuccess>().having((s) => s.posts.first.title, 'tiêu đề bài đầu', 'A'), //s là 1 object của PostSuccess
+      //isA<PostSuccess>().having((s) => s.posts, 'danh sách rỗng', isEmpty),
     );
 
     blocTest<PostCubit, PostState>(
@@ -37,6 +39,7 @@ void main() {
       },
       act: (cubit) => cubit.fetch(),
       expect: () => [isA<PostLoading>(), isA<PostFailure>()],
+    //   isA<PostFailure>().having((s) => s.message,'nội dung lỗi', contains('500')), //tin nhắn có chứa chữ '500' không,
     );
   });
 }
